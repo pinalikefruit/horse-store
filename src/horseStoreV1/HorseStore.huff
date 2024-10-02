@@ -1,0 +1,13 @@
+// 1. Where did this data come from? How did Remix know to send this data?
+//    1. 0xe026c0170000000000000000000000000000000000000000000000000000000000000001
+//    2. How does the EVM know how to interpret/interact with data?
+// 2. How does Remix know to update the number of horses with this data?
+
+
+// The skeleton of our `MAIN` macro is outlined with the `takes` and `returns` syntax specifying the stack operations it will perform
+
+// 60008060093d393df3 - Contract creation bytecode
+// 60018060093d393df35f - add 5F push 0 onto the stack
+#define macro MAIN() = takes(0) returns(0) {
+    0x00
+}
