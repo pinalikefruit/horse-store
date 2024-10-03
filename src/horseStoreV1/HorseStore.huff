@@ -8,6 +8,18 @@
 
 // 60008060093d393df3 - Contract creation bytecode
 // 60018060093d393df35f - add 5F push 0 onto the stack
+// 60028060093d393df3 5f 35
 #define macro MAIN() = takes(0) returns(0) {
-    0x00
+    0x00               // [0]
+    // 0x02           TOP [2,0] BOTTOM
+    calldataload       // [calldata] take the 0 in the stack as a input offset for take the 32 bytes
 }
+
+/// cast --to-base 0x0102 bin
+/// 0b 10000 0000010
+
+// For take the function selector:
+// PUSH0
+// calldataload
+// PUSH1 0xE0
+// SHR
