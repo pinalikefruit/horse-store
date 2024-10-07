@@ -13,7 +13,27 @@
     0x00               // [0]
     // 0x02           TOP [2,0] BOTTOM
     calldataload       // [calldata] take the 0 in the stack as a input offset for take the 32 bytes
+    // 0xe026c0170000000000000000000000000000000000000000000000000000000000000001
+    // first 32 bytes 0xe026c01700000000000000000000000000000000000000000000000000000000-00000001
+    // shf 56/2(hex) * 8 (bits) = 224 
+    // convert 225 dec to hex -> cast --to-base 224 hex 0xe0
+    0xE0
+    shr
+
+    // If f_select = 0xcdfead2e = updateHorseNumber -> jump to that data in the contract
+    // If f_select = 0xe026c017 = readNumberOfHorses -> jump to that data in the contract 
+
+    // updateHorseNumber selector 
+    0xcdfead2e
+    eq // [true_if_func_selector_matches]
+    updateJump               // [updateHorseNumberProgramCounter, true/false]
+    jumpi                    // []
+
+    updateJump:
+        SET_NUMBER_OF_HORSES()
 }
+
+#define macro SET_NUMBER_OF_HORSES() = takes(0) returns(0){}
 
 /// cast --to-base 0x0102 bin
 /// 0b 10000 0000010
