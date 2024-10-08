@@ -18,22 +18,35 @@
     // shf 56/2(hex) * 8 (bits) = 224 
     // convert 225 dec to hex -> cast --to-base 224 hex 0xe0
     0xE0
-    shr
+    shr                      //[function_selector]
 
     // If f_select = 0xcdfead2e = updateHorseNumber -> jump to that data in the contract
     // If f_select = 0xe026c017 = readNumberOfHorses -> jump to that data in the contract 
-
+    dup1                     // [function_selector, function selector]
     // updateHorseNumber selector 
-    0xcdfead2e
-    eq // [true_if_func_selector_matches]
-    updateJump               // [updateHorseNumberProgramCounter, true/false]
-    jumpi                    // []
+    0xcdfead2e               // [0xcdfead2e, function_selector, function selector]
+    eq                       // [true/false, function selector]
+    updateJump               // [updateHorseNumberProgramCounter, true/false, function selector]
+    jumpi                    // [function selector]
+    
+    0xe026c017
+    eq
+    readJump
+    jumpi
 
-    updateJump:
+    0x00 0x00 revert                  // Don't find anything
+    updateJump:                   // They add JUMPDEST here automatically 
         SET_NUMBER_OF_HORSES()
+
+    // Logic for UpdateJump and  skip the readJumpDest
+    readJump:
+        GET_NUMBER_OF_HORSES()
+    // Logic for readJump   
 }
 
 #define macro SET_NUMBER_OF_HORSES() = takes(0) returns(0){}
+
+#define macro GET_NUMBER_OF_HORSES() = takes(0) returns(0){}
 
 /// cast --to-base 0x0102 bin
 /// 0b 10000 0000010
