@@ -20,7 +20,7 @@
     0x00               // [0]
     // 0x02           TOP [2,0] BOTTOM
     calldataload       // [calldata] take the 0 in the stack as a input offset for take the 32 bytes
-    // 0xe026c0170000000000000000000000000000000000000000000000000000000000000001
+    // 0xcdfead2e0000000000000000000000000000000000000000000000000000000000000009
     // first 32 bytes 0xe026c01700000000000000000000000000000000000000000000000000000000-00000001
     // shf 56/2(hex) * 8 (bits) = 224 
     // convert 225 dec to hex -> cast --to-base 224 hex 0xe0
@@ -65,15 +65,17 @@
 
 #define macro GET_NUMBER_OF_HORSES() = takes(0) returns(0){
     // 1. Get the storage slot 
-    [NUMBER_OF_HORSES_STORAGE_SLOT]
-    // 2. Read value 
-    sload
+    [NUMBER_OF_HORSES_STORAGE_SLOT]   // [key]
+    // 2. Read value from the slot
+    sload                             // [value]
+    // 3. They add into stack return get from memory 
+    0x00                              // [0x00, value]
+    mstore                            // []      // memory: [value]
     // 3. Return 
-    0x00
-    0x01
-    return
+    // 32 bytes == 0x20 take all the memory
+    0x20 0x00  return
 
-}
+}   //0000000000000000000000000000000000000000000000000000000000000008
 
 /// cast --to-base 0x0102 bin
 /// 0b 10000 0000010
